@@ -1,18 +1,10 @@
 import sys
-import myo as libmyo
+import myo as libmyo; libmyo.init('/Users/phil/Documents/sdk/myo.framework')
 from time import clock
 from collections import deque
-from myo import Hub
+
 
 class EmgRate(libmyo.DeviceListener):
-
-  __slots__ = 'times last_time n'.split()
-
-  def __init__(self, n):
-    super(EmgRate, self).__init__()
-    self.times = deque()
-    self.last_time = None
-    self.n = int(n)
 
   @property
   def rate(self):
@@ -32,22 +24,20 @@ class EmgRate(libmyo.DeviceListener):
     myo.set_stream_emg(libmyo.StreamEmg.enabled)
 
   def on_emg_data(self, myo, timestamp, emg):
-    t = clock()
-    if self.last_time is not None:
-      self.times.append(t - self.last_time)
-      if len(self.times) > self.n:
-        self.times.popleft()
-    self.last_time = t
+    print(emg)
 
 def main():
-  libmyo.init('/Users/phil/Documents/sdk/myo.framework')
   hub = libmyo.Hub()
-  listener = EmgRate(50)
+  listener = EmgRate()
   try:
     while True:
       hub.run_once(100, listener)
-    #  print("\r\033[KEMG Rate:", listener.rate, end='')
+      #print("EMG Rate: %s", listener.rate)
       sys.stdout.flush()
+
+  except KeyboardInterrupt:
+	print('\nQuit')
+
   finally:
     hub.stop(True)
     hub.shutdown()
