@@ -1,0 +1,5 @@
+Reference Links : 
+1. https://www.quora.com/What-are-some-of-the-best-applications-using-Googles-TensorFlow
+2. http://download.tensorflow.org/paper/whitepaper2015.pdf
+3. http://www.kdnuggets.com/2015/11/google-tensorflow-deep-learning-disappoints.html
+4. https://en.wikipedia.org/wiki/TensorFlow
