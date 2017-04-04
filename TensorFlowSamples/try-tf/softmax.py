@@ -54,11 +54,12 @@ def main(argv=None):
 
     # Plot? 
     plot = FLAGS.plot
-    
+    print(plot)
     # Get the data.
     train_data_filename = FLAGS.train
     test_data_filename = FLAGS.test
-
+    print(train_data_filename)
+    print(test_data_filename)
     # Extract it into numpy matrices.
     train_data,train_labels = extract_data(train_data_filename)
     test_data, test_labels = extract_data(test_data_filename)
