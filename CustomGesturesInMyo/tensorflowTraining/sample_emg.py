@@ -17,7 +17,7 @@ class MyListener(myo.DeviceListener):
 
   def on_emg_data(self, device, timestamp, emg_data):
     with self.lock:
-      self.emg_data_queue.append((timestamp, emg_data))
+      self.emg_data_queue.append(emg_data)
 
   def get_emg_data(self):
     with self.lock:
@@ -40,7 +40,7 @@ hub = myo.Hub()
 # data4.txt - Three Finger
 
 try:
-  target = open("t4_data4.txt", "w")
+  target = open("c_1.txt", "w")
   target.truncate()
   listener = MyListener()
   hub.run(200, listener)
@@ -52,6 +52,7 @@ try:
     target.write("\n---Sample %d START---\n" % i)
     for j in range(100):
         target.write(str(listener.get_emg_data()))
+        time.sleep(0.1)
         target.write("\n\n")
     target.write("\n---Sample %d END---\n" % i)
     print("---Sample %d END---" % i)
