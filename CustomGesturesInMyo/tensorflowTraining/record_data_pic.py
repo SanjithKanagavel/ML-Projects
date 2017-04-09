@@ -1,5 +1,6 @@
 from __future__ import print_function
 import shutil
+import pickle
 import collections
 import sys
 import myo
@@ -20,10 +21,6 @@ class MyoListener(myo.DeviceListener):
 
   def on_emg_data(self, device, timestamp, emg_data):
     with self.lock:
-#      print(type(emg_data))
-#      print(list(emg_data))
-#      print(type(np.array(emg_data)))
-#      print(np.array(list(emg_data)))
       self.emg_data_queue.append(list(emg_data))
 
   def get_emg_data(self):
@@ -51,16 +48,16 @@ try:
       os.makedirs(parentDir)
 
   for i in range(no_samples):
-    targetFile = open(parentDir+gesture_name+str(i)+".txt", "w+")
+    targetFile = open(parentDir+gesture_name+str(i)+".p", "wb")
     targetFile.truncate()
+    results = [0,0,0,0,0,0,0,0]
     for j in range(1000):
         sys.stdout.flush()
         print("Recordings Data "+ str(j) +"for sample " + str(i+1)+"...")
-        dataArr = listener.get_emg_data()
-        for k in range(8):
-            targetFile.write(str(dataArr[k]))
-            targetFile.write("\n")
+        print(results)
+        results = np.vstack([results, listener.get_emg_data()])
         time.sleep(0.01)
+    pickle.dump( results, targetFile )
 
 finally:
   hub.shutdown()
